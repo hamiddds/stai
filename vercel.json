@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "name": "company-budget-ai-tracker",
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "installCommand": "npm install",
+        "buildCommand": "npm run build",
+        "outputDirectory": "dist"
+      }
+    },
+    {
+      "src": "backend/api/index.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "backend/package.json"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/api/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/dist/$1"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
